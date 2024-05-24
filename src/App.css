@@ -1,0 +1,18 @@
+body {
+  background-color: #f4f5f7;
+  display: flex;
+  justify-content: center;
+}
+.buttonListStyle {
+  height: 40px;
+  background: #f4f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 60px;
+  padding: 5px;
+  flex: 10%;
+  flex-grow: 1;
+  margin: 10px;
+  cursor: pointer;
+}
