@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import styled from "styled-components";
 
-const ExesForm = ({ onInsert, exes }) => {
+const ExesForm = ({ onInsert }) => {
   const getCurrentTimetoString = () => {
     return new Date().toLocaleString();
   };
@@ -13,7 +13,7 @@ const ExesForm = ({ onInsert, exes }) => {
   const [desc, setDesc] = useState(""); // 내용
   const [open, setOpen] = useState(false); //입력창
 
-  const onSubmit = (e) => {
+  const onSubmit = useCallback((e) => {
     if (item === "" || amount === "" || desc === "") {
       alert("빈칸을 채워주세요");
       return;
@@ -24,7 +24,7 @@ const ExesForm = ({ onInsert, exes }) => {
     setAmount("");
     setDesc("");
     setOpen(false);
-  };
+  });
 
   return (
     <div>

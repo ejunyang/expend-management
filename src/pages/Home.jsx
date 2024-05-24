@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import ExesList from "../component/ExesList";
 import ExesForm from "../component/ExesForm";
@@ -20,7 +20,7 @@ const Home = () => {
     setSelectedMonth(idx);
   };
 
-  const onInsert = (date, item, amount, desc) => {
+  const onInsert = useCallback((date, item, amount, desc) => {
     const newExes = {
       id: uuidv4(),
       date,
@@ -47,7 +47,7 @@ const Home = () => {
     setExes(addExes);
     //로컬스토리지 저장
     localStorage.setItem("expenseList", JSON.stringify(addExes));
-  };
+  });
 
   //해당 월 지출 내역을 변수에 할당
   //월별 지출 내역이 노출되도록 리스트 컴포넌트에 props로 내려준다.

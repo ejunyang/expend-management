@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
@@ -24,7 +24,7 @@ const Detail = () => {
     navigate(-1); //뒤로가기
   };
 
-  const onRemove = (id) => {
+  const onRemove = useCallback((id) => {
     if (confirm("정말 삭제하시겠습니까?") == true) {
       //불러온 데이터를 filter 메서드로 순회를 돌려 반환한 데이터들을 removeData 변수에 할당
       //객체 데이터를 배열로 가져옴 data => data[item.month]
@@ -37,9 +37,9 @@ const Detail = () => {
     } else {
       return false;
     }
-  };
+  });
 
-  const onModify = (id) => {
+  const onModify = useCallback((id) => {
     const modifiedData = {
       id: exe.id,
       date: dateRef.current.value, //변수 접근
@@ -59,7 +59,7 @@ const Detail = () => {
 
     localStorage.setItem("expenseList", JSON.stringify(data));
     navigate(-1);
-  };
+  });
 
   return (
     <>
