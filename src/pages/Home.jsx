@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import ExesList from "../component/ExesList";
 import ExesForm from "../component/ExesForm";
@@ -12,9 +12,13 @@ const Home = () => {
     ? JSON.parse(localStorage.getItem("expenseList"))
     : {};
 
+  const initialSelectedMonth = localStorage.getItem("selectedMonth")
+    ? parseInt(localStorage.getItem("selectedMonth"))
+    : new Date().getMonth();
+
   //값을 불러올 때는 useState 기본값에 넣어준다.
   const [exes, setExes] = useState(initalLocalData);
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); //현재 날짜로 출력
+  const [selectedMonth, setSelectedMonth] = useState(initialSelectedMonth); //현재 날짜로 출력
 
   const handleMonthSelect = (idx) => {
     setSelectedMonth(idx);
@@ -52,6 +56,10 @@ const Home = () => {
   //해당 월 지출 내역을 변수에 할당
   //월별 지출 내역이 노출되도록 리스트 컴포넌트에 props로 내려준다.
   const filteredList = exes[selectedMonth];
+
+  useEffect(() => {
+    localStorage.setItem("selectedMonth", JSON.stringify(selectedMonth));
+  });
 
   return (
     <>
