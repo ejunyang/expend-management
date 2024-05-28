@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import ExesItem from "./ExesItem";
+import { Context } from "../context/Context";
 
-const ExesList = ({ filteredList, setExes }) => {
+const ExesList = () => {
+  const { filteredList } = useContext(Context);
   return (
     <div>
       <ul>
@@ -16,7 +18,7 @@ const ExesList = ({ filteredList, setExes }) => {
         */}
         {filteredList &&
           filteredList.map((exe) => {
-            return <ExesItem key={exe.id} exe={exe} setExes={setExes} />;
+            return <ExesItem key={exe.id} exe={exe} />;
           })}
       </ul>
     </div>

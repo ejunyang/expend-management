@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Context } from "../context/Context";
 
 const ExesItem = ({ exe }) => {
   const navigate = useNavigate();
-  const { id, date, item, amount, desc } = exe;
+  const { id, date, item, desc, amount } = exe;
 
   const onDetailButtonHandler = (id) => {
     navigate(`/detail/${id}`, { state: { exe } }); //페이지 간 props 전달 -> Detail.jsx

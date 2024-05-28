@@ -1,30 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import styled from "styled-components";
+import { Context } from "../context/Context";
 
-const ExesForm = ({ onInsert, exes }) => {
-  const getCurrentTimetoString = () => {
-    return new Date().toLocaleString();
-  };
+const ExesForm = () => {
+  const { onInsert } = useContext(Context);
 
-  const [date, setDate] = useState(getCurrentTimetoString); // 항목
+  const [date, setDate] = useState(""); // 항목
   const [item, setItem] = useState(""); // 항목
   const [amount, setAmount] = useState(""); // 금액
   const [desc, setDesc] = useState(""); // 내용
   const [open, setOpen] = useState(false); //입력창
 
-  const onSubmit = (e) => {
-    if (item === "" || amount === "" || desc === "") {
-      alert("빈칸을 채워주세요");
-      return;
-    }
-    e.preventDefault();
-    onInsert(date, item, amount, desc);
-    setItem("");
-    setAmount("");
-    setDesc("");
-    setOpen(false);
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault(); //새로고침 방지
+      if (item === "" || amount === "" || desc === "") {
+        alert("빈칸을 채워주세요");
+        return;
+      }
+      onInsert(date, item, amount, desc);
+      setItem("");
+      setAmount("");
+      setDesc("");
+      setOpen(false);
+    },
+    [date, item, amount, desc]
+  );
 
   return (
     <div>
@@ -33,17 +35,27 @@ const ExesForm = ({ onInsert, exes }) => {
           <H1>지출 작성</H1>
           <label>날짜</label>
           <StInput
-            type="text"
+            type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
           <label>항목</label>
-          <StInput
+          <StSelect
             type="text"
             value={item}
             onChange={(e) => setItem(e.target.value)}
             placeholder="항목을 입력해주세요"
-          />
+          >
+            <option value="🍜" defaultValue>
+              식비
+            </option>
+            <option value="🎬">문화</option>
+            <option value="🍜">식비</option>
+            <option value="🍿">간식</option>
+            <option value="📚">도서</option>
+            <option value="👕">쇼핑</option>
+            <option value="🧗🏻">운동</option>
+          </StSelect>
           <label>내용</label>
           <StInput
             type="text"
@@ -109,6 +121,14 @@ const AddForm = styled.form`
 
 const StInput = styled.input`
   height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+`;
+
+const StSelect = styled.select`
+  height: 50px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;

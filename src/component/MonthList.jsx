@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../App.css";
 import styled from "styled-components";
+import { Context } from "../context/Context";
 
-const MonthList = ({ exes, selectedMonth, handleMonthSelect }) => {
+const MonthList = () => {
+  const { exes, selectedMonth, handleMonthSelect } = useContext(Context);
   // 함수를 handleClick으로 만들어 주고 idx 인덱스 값을 받게 된다.
   // index값을 받은 것만 true로 변경
   const monthArray = [
