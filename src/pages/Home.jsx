@@ -4,10 +4,10 @@ import ExesList from "../component/ExesList";
 import ExesForm from "../component/ExesForm";
 import MonthList from "../component/MonthList";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import { addExpense } from "../redux/slices/expense";
 
 const Home = () => {
-  //로컬스토리지에 저장되어있는 데이터가 있다면 불러오고 없다면 빈 객체로 가지고 온다.
-  //JSON.stringify로 객체를 string으로 변환해준 것을 다시 객체로 변환해주기 위해 JSON.parse를 이용
   const initalLocalData = localStorage.getItem("expenseList")
     ? JSON.parse(localStorage.getItem("expenseList"))
     : {};
@@ -16,41 +16,58 @@ const Home = () => {
     ? parseInt(localStorage.getItem("selectedMonth"))
     : new Date().getMonth();
 
-  //값을 불러올 때는 useState 기본값에 넣어준다.
-  const [exes, setExes] = useState(initalLocalData);
-  const [selectedMonth, setSelectedMonth] = useState(initialSelectedMonth); //현재 날짜로 출력
+  //const [exes, setExes] = useState(initalLocalData);
+  //dispatch로 리듀서한테 상태 변경을 요청한다.
+  const dispatch = useDispatch();
+  const exes = useSelector((state) => state.expense.expenseList);
+  console.log(exes);
+  const [selectedMonth, setSelectedMonth] = useState(initialSelectedMonth);
 
   const handleMonthSelect = (idx) => {
     setSelectedMonth(idx);
   };
 
   const onInsert = useCallback((date, item, amount, desc) => {
-    const newExes = {
-      id: uuidv4(),
-      date,
-      item,
-      amount,
-      desc,
-      month: selectedMonth, //추가할때마다 해당하는 월이 어딘지 확인
-    };
+    //addExpense() - 리듀서는 함수이다.
+    dispatch(
+      addExpense({
+        selectedMonth: selectedMonth,
+        newExes: {
+          id: uuidv4(),
+          date,
+          item,
+          amount,
+          desc,
+          month: selectedMonth,
+        },
+      })
+    );
+    // const newExes = {
+    //   id: uuidv4(),
+    //   date,
+    //   item,
+    //   amount,
+    //   desc,
+    //   month: selectedMonth,
+    // };
 
-    //객체로 가져오기
-    //key - 월, value - 지출내역
-    const addExes = {
-      ...exes,
-    };
+    // //객체로 가져오기
+    // //key - 월, value - 지출내역
+    // const addExes = {
+    //   ...exes,
+    // };
 
-    //해당 월에 지출 내역이 없다면 빈배열을 넣어준다
-    if (!addExes[selectedMonth]) {
-      addExes[selectedMonth] = [];
-    }
-    //새로운 지출내역 추가
-    addExes[selectedMonth].push(newExes);
+    // //해당 월에 지출 내역이 없다면 빈배열을 넣어준다
+    // if (!addExes[selectedMonth]) {
+    //   addExes[selectedMonth] = [];
+    // }
+    // //새로운 지출내역 추가
+    // addExes[selectedMonth].push(newExes);
 
-    //지출 내역 상태 업데이트
-    setExes(addExes);
-    //로컬스토리지 저장
-    localStorage.setItem("expenseList", JSON.stringify(addExes));
+    // //지출 내역 상태 업데이트
+    // setExes(addExes);
+    // //로컬스토리지 저장
+    // localStorage.setItem("expenseList", JSON.stringify(addExes));
   });
 
   //해당 월 지출 내역을 변수에 할당
@@ -70,7 +87,7 @@ const Home = () => {
           selectedMonth={selectedMonth}
           handleMonthSelect={handleMonthSelect}
         />
-        <ExesList key={exes.id} filteredList={filteredList} setExes={setExes} />
+        <ExesList key={exes.id} filteredList={filteredList} />
         <ExesForm onInsert={onInsert} exes={exes} />
       </StContainer>
     </>

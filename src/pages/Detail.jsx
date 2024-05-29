@@ -83,9 +83,16 @@ const Detail = () => {
 
         <DetailContainer>
           <label>날짜</label>
-          <StInput ref={dateRef} defaultValue={exe.date} />
+          <StInput ref={dateRef} type="date" defaultValue={exe.date} />
           <label>항목</label>
-          <StInput ref={itemRef} defaultValue={exe.item} />
+          <StSelect ref={itemRef} defaultValue={exe.item}>
+            <option defaultValue={exe.item}>🎬</option>
+            <option defaultValue={exe.item}>🍜</option>
+            <option defaultValue={exe.item}>🍿</option>
+            <option defaultValue={exe.item}>📚</option>
+            <option defaultValue={exe.item}>👕</option>
+            <option defaultValue={exe.item}>🧗🏻</option>
+          </StSelect>
           <label>내용</label>
           <StInput ref={descRef} defaultValue={exe.desc} />
           <label>금액</label>
@@ -174,6 +181,14 @@ const StInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
+`;
+
+const StSelect = styled.select`
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
 `;
 
 const ButtonWrap = styled.div`

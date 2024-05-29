@@ -33,17 +33,26 @@ const ExesForm = ({ onInsert }) => {
           <H1>지출 작성</H1>
           <label>날짜</label>
           <StInput
-            type="text"
+            type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
           <label>항목</label>
-          <StInput
+          <StSelect
             type="text"
             value={item}
             onChange={(e) => setItem(e.target.value)}
             placeholder="항목을 입력해주세요"
-          />
+          >
+            <option value="🍜" defaultValue>
+              식비
+            </option>
+            <option value="🎬">문화</option>
+            <option value="🍿">간식</option>
+            <option value="📚">도서</option>
+            <option value="👕">쇼핑</option>
+            <option value="🧗🏻">운동</option>
+          </StSelect>
           <label>내용</label>
           <StInput
             type="text"
@@ -109,6 +118,14 @@ const AddForm = styled.form`
 
 const StInput = styled.input`
   height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+`;
+
+const StSelect = styled.select`
+  height: 50px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
