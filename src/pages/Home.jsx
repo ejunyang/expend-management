@@ -6,25 +6,18 @@ import MonthList from "../component/MonthList";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { addExpense } from "../redux/slices/expense";
+import { setSelectedMonth } from "../redux/slices/month";
 
 const Home = () => {
-  const initalLocalData = localStorage.getItem("expenseList")
-    ? JSON.parse(localStorage.getItem("expenseList"))
-    : {};
-
-  const initialSelectedMonth = localStorage.getItem("selectedMonth")
-    ? parseInt(localStorage.getItem("selectedMonth"))
-    : new Date().getMonth();
-
-  //const [exes, setExes] = useState(initalLocalData);
   //dispatch로 리듀서한테 상태 변경을 요청한다.
   const dispatch = useDispatch();
+  //구독할 대상 => expense.expenseList (모든 월의 지출내역)
   const exes = useSelector((state) => state.expense.expenseList);
-  console.log(exes);
-  const [selectedMonth, setSelectedMonth] = useState(initialSelectedMonth);
+  const selectedMonth = useSelector((state) => state.month.selectedMonth);
 
+  console.log("selectedMonth1", selectedMonth);
   const handleMonthSelect = (idx) => {
-    setSelectedMonth(idx);
+    dispatch(setSelectedMonth(idx));
   };
 
   const onInsert = useCallback((date, item, amount, desc) => {
@@ -42,32 +35,6 @@ const Home = () => {
         },
       })
     );
-    // const newExes = {
-    //   id: uuidv4(),
-    //   date,
-    //   item,
-    //   amount,
-    //   desc,
-    //   month: selectedMonth,
-    // };
-
-    // //객체로 가져오기
-    // //key - 월, value - 지출내역
-    // const addExes = {
-    //   ...exes,
-    // };
-
-    // //해당 월에 지출 내역이 없다면 빈배열을 넣어준다
-    // if (!addExes[selectedMonth]) {
-    //   addExes[selectedMonth] = [];
-    // }
-    // //새로운 지출내역 추가
-    // addExes[selectedMonth].push(newExes);
-
-    // //지출 내역 상태 업데이트
-    // setExes(addExes);
-    // //로컬스토리지 저장
-    // localStorage.setItem("expenseList", JSON.stringify(addExes));
   });
 
   //해당 월 지출 내역을 변수에 할당
@@ -76,19 +43,14 @@ const Home = () => {
 
   useEffect(() => {
     localStorage.setItem("selectedMonth", JSON.stringify(selectedMonth));
-  });
+  }, [selectedMonth]);
 
   return (
     <>
       <StContainer>
-        <MonthList
-          key={exes.id}
-          exes={exes}
-          selectedMonth={selectedMonth}
-          handleMonthSelect={handleMonthSelect}
-        />
+        <MonthList key={exes.id} handleMonthSelect={handleMonthSelect} />
         <ExesList key={exes.id} filteredList={filteredList} />
-        <ExesForm onInsert={onInsert} exes={exes} />
+        <ExesForm onInsert={onInsert} />
       </StContainer>
     </>
   );

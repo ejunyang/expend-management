@@ -1,24 +1,14 @@
 import React from "react";
 import "../App.css";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-const MonthList = ({ exes, selectedMonth, handleMonthSelect }) => {
+const MonthList = ({ handleMonthSelect }) => {
+  const exes = useSelector((state) => state.expense.expenseList);
+  const selectedMonth = useSelector((state) => state.month.selectedMonth);
   // 함수를 handleClick으로 만들어 주고 idx 인덱스 값을 받게 된다.
   // index값을 받은 것만 true로 변경
-  const monthArray = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
+  const monthArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   //exes를 그대로 사용하니 type error reduce is not a function 오류
   //exes 객체 안에 amount 말고 다른 값들이 있어 NaN으로 출력 오류
@@ -46,7 +36,7 @@ const MonthList = ({ exes, selectedMonth, handleMonthSelect }) => {
               $active={selectedMonth === idx}
               onClick={() => handleMonthSelect(idx)}
             >
-              {MonthText}
+              {`${MonthText}월`}
             </MonthItem>
           );
         })}

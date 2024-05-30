@@ -3,11 +3,7 @@ import { FaPen } from "react-icons/fa6";
 import styled from "styled-components";
 
 const ExesForm = ({ onInsert }) => {
-  const getCurrentTimetoString = () => {
-    return new Date().toLocaleString();
-  };
-
-  const [date, setDate] = useState(getCurrentTimetoString); // 항목
+  const [date, setDate] = useState(""); // 항목
   const [item, setItem] = useState(""); // 항목
   const [amount, setAmount] = useState(""); // 금액
   const [desc, setDesc] = useState(""); // 내용

@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import expense from "../slices/expense";
+import month from "../slices/month";
 
 // 1. 스토어 생성
 // 2. 리듀서 생성
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     //expense.js에서 만든 객체 그자체
     expense: expense,
+    month: month,
   },
 });
 
